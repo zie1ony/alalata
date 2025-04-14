@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>AlaLata – Gra inspirowana Flappy Bird</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #031c1f;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      display: block;
+      background: #70c5ce;
+      margin: 20px auto;
+      display: block;
+    }
+  </style>
+  <script type="module">
+    import Game from "./src/game.js";
+
+    // Onload 
+    document.addEventListener("DOMContentLoaded", function() {
+      
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = Math.min(window.innerWidth, 800);
+      canvas.height = Math.min(window.innerHeight, 600);
+
+      let game = new Game(ctx, canvas.height, canvas.width);
+      game.start();
+
+    });
+    </script>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+</body>
+</html>
