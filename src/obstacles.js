@@ -9,6 +9,7 @@ class Obstacles {
         this.lastObstacleTime = Date.now();
         this.pxPerSecond = 300; // Pixels per second
         this.rockPeriod = 1000;
+        this.pipePeriod = 2000; // Period for moving pipe oscillation
     }
 
     update(deltaTime) {
@@ -23,41 +24,68 @@ class Obstacles {
         
         // Update existing obstacles
         for (let i = this.obstacles.length - 1; i >= 0; i--) {
+            const obstacle = this.obstacles[i];
+            
             // Special animation for rock obstacles
-            if (this.obstacles[i].type === "rock") {
+            if (obstacle.type === "rock") {
                 const amplitude = 100;
-                const t = now - this.obstacles[i].spawnTime;
-                this.obstacles[i].y = this.obstacles[i].initialY + 
+                const t = now - obstacle.spawnTime;
+                obstacle.y = obstacle.initialY + 
                     amplitude * Math.sin(2 * Math.PI * t / this.rockPeriod);
             }
             
+            // Handle moving pipe gaps
+            if (obstacle.type === 'pipe' && obstacle.isMoving) {
+                // Only update the first part of the pair (the reference part)
+                if (obstacle.isPairReference) {
+                    const amplitude = 80; // Max distance the gap will move
+                    const t = now - obstacle.spawnTime;
+                    const newGapPosition = obstacle.initialGapPosition + 
+                        amplitude * Math.sin(2 * Math.PI * t / this.pipePeriod);
+                    
+                    // Update the top pipe's height
+                    obstacle.height = newGapPosition;
+                    
+                    // Find and update the bottom pipe (which is the next obstacle in the array)
+                    if (i + 1 < this.obstacles.length && this.obstacles[i + 1].pairId === obstacle.pairId) {
+                        const bottomPipe = this.obstacles[i + 1];
+                        bottomPipe.y = newGapPosition + obstacle.gapHeight;
+                        bottomPipe.height = this.canvasHeight - bottomPipe.y;
+                    }
+                }
+            }
+            
             // Move obstacle to the left
-            this.obstacles[i].x -= speedFactor;
+            obstacle.x -= speedFactor;
             
             // Remove obstacles that are off-screen
-            if (this.obstacles[i].x + this.obstacles[i].width < 0) {
+            if (obstacle.x + obstacle.width < 0) {
                 this.obstacles.splice(i, 1);
             }
         }
     }
 
     createObstacle() {
-        // 30% chance for flying rock, 70% for pipe
-        if (Math.random() < 0.3) {
+        // 30% chance for flying rock, 20% for moving pipes, 50% for regular pipes
+        const random = Math.random();
+        if (random < 0.3) {
             console.log("Creating flying rock");
             this.createFlyingRock();
+        } else if (random < 0.5) {
+            console.log("Creating moving pipe obstacle");
+            this.createMovingPipeObstacle();
         } else {
             console.log("Creating pipe obstacle");
             this.createPipeObstacle();
         }
     }
 
-    createPipeObstacle() {
-        const gapHeight = 200;
+    createPipeObstacle(isMoving = false, gapHeight = 200) {
         const minGapY = 40;
         const maxGapY = this.canvasHeight - gapHeight - 40;
         const gapPosition = Math.random() * (maxGapY - minGapY) + minGapY;
         const obstacleWidth = 50;
+        const pairId = Date.now(); // Unique ID to match pipe pairs
         
         // Top pipe
         this.obstacles.push({
@@ -66,7 +94,13 @@ class Obstacles {
             y: 0,
             width: obstacleWidth,
             height: gapPosition,
-            color: "green"
+            color: isMoving ? "lightgreen" : "green", // Different color for moving pipes
+            isMoving: isMoving,
+            isPairReference: true, // This is the pipe we'll use as reference for moving the pair
+            pairId: pairId,
+            gapHeight: gapHeight,
+            initialGapPosition: gapPosition,
+            spawnTime: Date.now()
         });
         
         // Bottom pipe
@@ -76,8 +110,16 @@ class Obstacles {
             y: gapPosition + gapHeight,
             width: obstacleWidth,
             height: this.canvasHeight - gapPosition - gapHeight,
-            color: "green"
+            color: isMoving ? "lightgreen" : "green",
+            isMoving: isMoving,
+            isPairReference: false, // This pipe follows the reference pipe
+            pairId: pairId
         });
+    }
+
+    createMovingPipeObstacle() {
+        // Uses the same pipe creation but with moving flag set to true
+        this.createPipeObstacle(true, 300);
     }
 
     createFlyingRock() {
@@ -122,14 +164,17 @@ class Obstacles {
     }
 
     // Optionally add rock/pipe images
-    setImages(rockImg, pipeImg) {
+    setImages(rockImg, pipeImg, movingPipeImg) {
         this.rockImg = rockImg;
         this.pipeImg = pipeImg;
+        this.movingPipeImg = movingPipeImg || pipeImg; // Use separate image for moving pipes if provided
     }
 
     setGameSpeed(speed) {
         this.pxPerSecond = GameSpeed.objectsSpeed(speed);
-        // this.rockPeriod = GameSpeed.rockPeriod(speed);
+        // Optionally adjust animation periods based on game speed
+        // this.rockPeriod = GameSpeed.rockPeriod(speed) || 1000;
+        // this.pipePeriod = GameSpeed.pipePeriod(speed) || 2000;
     }
 }
 

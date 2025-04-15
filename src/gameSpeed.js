@@ -54,6 +54,17 @@ class GameSpeed {
                 return 500;
         }
     }
+
+    static pipePeriod(speed) {
+        switch(speed) {
+            case GameSpeed.SLOW:
+                return 3000; // Slower oscillation when game is slow
+            case GameSpeed.FAST:
+                return 1000; // Faster oscillation when game is fast
+            default:
+                return 2000; // Normal oscillation speed
+        }
+    }
 }
 
 export default GameSpeed;

@@ -5,7 +5,7 @@ class Coins {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.coins = [];
-        this.coinFrequency = 500; // Interval in ms between coin creation
+        this.coinFrequency = 300; // Interval in ms between coin creation
         this.lastCoinTime = Date.now();
         this.pxPerSecond = 300; // Pixels per second
         this.score = 0;

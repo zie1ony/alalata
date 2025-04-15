@@ -28,7 +28,7 @@ class Powerups {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.powerups = [];
-        this.powerupFrequency = 1000; // Interval in ms between powerup creation
+        this.powerupFrequency = 5000; // Interval in ms between powerup creation
         this.lastPowerupTime = Date.now();
         this.pxPerSecond = 300; // Pixels per second
         
@@ -121,21 +121,21 @@ class Powerups {
     activatePowerup(powerup) {
         switch(powerup.type) {
             case "shield":
-                this.shield.activate(Date.now());
+                this.shield.activate();
                 break;
                 
             case "magnet":
-                this.magnet.activate(Date.now());
+                this.magnet.activate();
                 break;
                 
             case "speed_up":
                 this.slowDown.deactivate();
-                this.speedUp.activate(Date.now());
+                this.speedUp.activate();
                 break;
                 
             case "slow_down":
                 this.speedUp.deactivate();
-                this.slowDown.activate(Date.now());
+                this.slowDown.activate();
                 break;
         }
     }

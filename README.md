@@ -11,3 +11,10 @@ There are also powerups:
 - speed_up - speed of the game is increased for a short time
 - slow_down - speed of the game is decreased for a short time
 
+# TODO:
+Migająca tarcza
+Zamienić na głowy
+- Ewa szybciej
+- Ola wolniej 
+- Kuba tarcza
+- magnez

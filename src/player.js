@@ -56,8 +56,8 @@ class Player {
         }
 
         // Handle key events for player movement
-        if (this.keys[38]) { this.y -= 6; }
-        if (this.keys[40]) { this.y += 6; }
+        if (this.keys[38]) { this.y -= 5; }
+        if (this.keys[40]) { this.y += 5; }
         if (this.y < 0) this.y = 0;
         if (this.y + this.height > this.canvasHeight) this.y = this.canvasHeight - this.height;
 
