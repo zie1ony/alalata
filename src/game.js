@@ -16,7 +16,10 @@ class Game {
     }
 
     isLoaded() {
-        return this.background.isLoaded() && this.player.isLoaded();
+        return this.background.isLoaded() 
+            && this.player.isLoaded()
+            && this.obstacles.isLoaded()
+            && this.coins.isLoaded();
     }
 
     start() {

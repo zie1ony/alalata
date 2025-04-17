@@ -9,6 +9,16 @@ class Coins {
         this.lastCoinTime = Date.now();
         this.pxPerSecond = 300; // Pixels per second
         this.score = 0;
+        this.coinImg = new Image();
+        this.coinImg.src = "./images/jar_small.png";
+        this.coinImg.onload = () => { this.loaded = true; };
+        this.loaded = false;
+        this.jarImgWidth = 200;
+        this.jarImgHeight = 262;
+    }
+
+    isLoaded() {
+        return this.loaded;
     }
 
     update(deltaTime, player, obstacles, magnetActive) {
@@ -116,7 +126,7 @@ class Coins {
     }
 
     createCoin(obstacles) {
-        const coinSize = 20;
+        const coinSize = 40;
         let attempts = 0;
         let maxAttempts = 10;
         let validPosition = false;
@@ -160,16 +170,11 @@ class Coins {
     draw(ctx) {
         // Draw all coins as circles
         this.coins.forEach(coin => {
-            ctx.fillStyle = coin.color;
-            ctx.beginPath();
-            ctx.arc(
-                coin.x + coin.width / 2, 
-                coin.y + coin.height / 2, 
-                coin.width / 2, 
-                0, 
-                Math.PI * 2
+            ctx.drawImage(
+                this.coinImg,
+                coin.x, coin.y,
+                coin.width*0.8, coin.height
             );
-            ctx.fill();
         });
     }
 

@@ -10,6 +10,28 @@ class Obstacles {
         this.pxPerSecond = 300; // Pixels per second
         this.rockPeriod = 1000;
         this.pipePeriod = 2000; // Period for moving pipe oscillation
+
+        this.loadedImages = 0;
+
+        this.pipeUp = new Image();
+        this.pipeUp.src = "./images/pipe_up.png";
+        this.pipeUp.onload = () => { this.loadedImages++; };
+
+        this.pipeDown = new Image();
+        this.pipeDown.src = "./images/pipe_down.png";
+        this.pipeDown.onload = () => { this.loadedImages++; };
+        this.pipeImgHeight = 600;
+        this.pipeImgWidth = 121;
+
+        this.rockImg = new Image();
+        this.rockImg.src = "./images/rock_small.png";
+        this.rockImg.onload = () => { this.loadedImages++; };
+        this.rockImgWidth = 300;
+        this.rockImgHeight = 265;
+    }
+
+    isLoaded() {
+        return this.loadedImages === 3;
     }
 
     update(deltaTime) {
@@ -59,7 +81,7 @@ class Obstacles {
             obstacle.x -= speedFactor;
             
             // Remove obstacles that are off-screen
-            if (obstacle.x + obstacle.width < 0) {
+            if (obstacle.x + obstacle.width < -50) {
                 this.obstacles.splice(i, 1);
             }
         }
@@ -84,7 +106,7 @@ class Obstacles {
         const minGapY = 40;
         const maxGapY = this.canvasHeight - gapHeight - 40;
         const gapPosition = Math.random() * (maxGapY - minGapY) + minGapY;
-        const obstacleWidth = 50;
+        const obstacleWidth = 70;
         const pairId = Date.now(); // Unique ID to match pipe pairs
         
         // Top pipe
@@ -123,15 +145,17 @@ class Obstacles {
     }
 
     createFlyingRock() {
-        const size = 100;
-        const y = Math.random() * (this.canvasHeight - size);
-        
+        const height = 50;
+        const y = Math.random() * (this.canvasHeight - height);
+        const scale = this.rockImgHeight / height;
+        const width = this.rockImgWidth / scale;
+
         this.obstacles.push({
             type: 'rock',
             x: this.canvasWidth,
             y: y,
-            width: size,
-            height: size,
+            width: height,
+            height: width,
             color: "gray",
             spawnTime: Date.now(),
             initialY: y  // Store initial Y position for oscillation
@@ -139,10 +163,37 @@ class Obstacles {
     }
 
     draw(ctx) {
-        // Draw all obstacles
         this.obstacles.forEach(obstacle => {
-            ctx.fillStyle = obstacle.color;
-            ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            if (obstacle.type === 'pipe') {
+                if (obstacle.isPairReference) {
+                    // Top pipe: use pipeUp image; crop from the bottom of the image
+                    const topPipeHeight = obstacle.height;
+                    ctx.drawImage(
+                        this.pipeUp,
+                        0, this.pipeImgHeight - topPipeHeight, // source x, source y (crop from bottom)
+                        this.pipeImgWidth, topPipeHeight,       // source width, source height
+                        obstacle.x, obstacle.y,                 // destination x, y
+                        this.pipeImgWidth, topPipeHeight        // destination width, height
+                    );
+                } else {
+                    // Bottom pipe: use pipeDown image; crop from the top of the image
+                    const bottomPipeHeight = obstacle.height;
+                    ctx.drawImage(
+                        this.pipeDown,
+                        0, 0,                                 // source x, source y
+                        this.pipeImgWidth, bottomPipeHeight,    // source width, source height
+                        obstacle.x, obstacle.y,                 // destination x, y
+                        this.pipeImgWidth, bottomPipeHeight     // destination width, height
+                    );
+                }
+            } else {
+                // For rock obstacles, draw the rock image
+                ctx.drawImage(
+                    this.rockImg,
+                    obstacle.x, obstacle.y,
+                    obstacle.width, obstacle.height
+                );
+            }
         });
     }
 
@@ -161,13 +212,6 @@ class Obstacles {
                  a.x + a.width < b.x ||
                  a.y > b.y + b.height ||
                  a.y + a.height < b.y);
-    }
-
-    // Optionally add rock/pipe images
-    setImages(rockImg, pipeImg, movingPipeImg) {
-        this.rockImg = rockImg;
-        this.pipeImg = pipeImg;
-        this.movingPipeImg = movingPipeImg || pipeImg; // Use separate image for moving pipes if provided
     }
 
     setGameSpeed(speed) {
