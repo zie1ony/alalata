@@ -63,12 +63,22 @@ class Player {
             this.frameCounter -= frameTime;
         }
 
-        // Handle key events for player movement
-        if (this.keys[38]) { this.y -= 5; }
-        if (this.keys[40]) { this.y += 5; }
-        if (this.y < 0) this.y = 0;
-        if (this.y + this.height > this.canvasHeight) this.y = this.canvasHeight - this.height;
+        // time‑based movement instead of fixed 5px/frame
+        const speed = 500;                     // px per second
+        const dy = speed * deltaTime / 1000;   // px this frame
+        if (this.keys[38]) {
+            this.y -= dy;
+            // console.log("up", this.y, dy, deltaTime);
+        }   // Up arrow
+        if (this.keys[40]) {
+            this.y += dy;
+            // console.log("down", this.y, dy, deltaTime);
+        }   // Down arrow
 
+        // Bounds clamp
+        if (this.y < 0) this.y = 0;
+        if (this.y + this.height > this.canvasHeight) 
+            this.y = this.canvasHeight - this.height;
     }
 
     draw(ctx) {

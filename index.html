@@ -1,308 +1,329 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
-  <meta charset="UTF-8">
-  <title>AlaLata – Gra inspirowana Flappy Bird</title>
-  <link rel="icon" type="image/png" href="images/favicon2.png">
-  <style>
-    /* html, body {
+    <meta charset="UTF-8">
+    <title>AlaLata – Gra inspirowana Flappy Bird</title>
+    <link rel="icon" type="image/png" href="images/favicon2.png">
+    <style>
+        /* html, body {
       margin: 0;
       padding: 0;
       background: #031c1f;
       overflow: hidden;
       font-family: Arial, sans-serif;
     } */
-    /* canvas {
+        /* canvas {
       display: block;
       background: #70c5ce;
       margin: 20px auto;
       display: block;
     } */
 
-    @font-face {
-      font-family: 'Comic Neue';
-      src: url('./fonts/ComicNeue-Bold.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
+        @font-face {
+            font-family: 'Comic Neue';
+            src: url('./fonts/ComicNeue-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
 
 
-    body {
-        background: #3fabe4;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        font-family: 'Comic Neue', sans-serif;
-    }
+        body {
+            background: #3fabe4;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Comic Neue', sans-serif;
+        }
 
-    /* Logo */
-    .logoImage {
-        padding: 0;
-    }
+        /* Logo */
+        .logoImage {
+            padding: 0;
+        }
 
-    .logoImage img {
-        display: block;
-        width: 100%;
-        margin: 0;
-    }
-     
+        .logoImage img {
+            display: block;
+            width: 100%;
+            margin: 0;
+        }
 
-    /* Menu */
-    .menuSection {
-        margin-top: 20px;
-        text-align: center;
-        background: #a1e4f2;         /* light tint against #3fabe4 */
-        border: 4px solid #235a5e;  /* dark, pixel‐y border */
-        padding: 20px 16px;
-        width: 90%;
-        max-width: 600px;
-        box-shadow: 6px 6px 0 0 #235a5e;  /* hard shadow, no blur */
-        font-family: 'Courier New', monospace; /* pixel‐style font */
-    }
 
-    .menuSection h2 {
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        color: #235a5e;
-        text-shadow: 2px 2px #e0f7fa; /* hard text shadow */
-        margin-bottom: 16px;
-    }
+        /* Menu */
+        .menuSection {
+            margin-top: 20px;
+            text-align: center;
+            background: #a1e4f2;
+            /* light tint against #3fabe4 */
+            border: 4px solid #235a5e;
+            /* dark, pixel‐y border */
+            padding: 20px 16px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            /* hard shadow, no blur */
+            font-family: 'Courier New', monospace;
+            /* pixel‐style font */
+        }
 
-    /* Button style to match menuSection, placed below input */
-    .funButton {
-        display: block;
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        padding: 10px 20px;
-        margin: 15px auto 0;
-        border: 4px solid #235a5e;
-        border-radius: 0;
-        background: #a1e4f2;
-        color: #235a5e;
-        text-shadow: 1px 1px #e0f7fa;
-        cursor: pointer;
-        box-shadow: 6px 6px 0 0 #235a5e;
-        transition: box-shadow 0.2s, transform 0.2s;
-        font-weight: bold;
-    }
+        .menuSection h2 {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #235a5e;
+            text-shadow: 2px 2px #e0f7fa;
+            /* hard text shadow */
+            margin-bottom: 16px;
+        }
 
-    .funButton:hover {
-        box-shadow: 8px 8px 0 0 #235a5e;
-        transform: translate(-2px, -2px);
-    }
+        /* Button style to match menuSection, placed below input */
+        .funButton {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 15px auto 0;
+            border: 4px solid #235a5e;
+            border-radius: 0;
+            background: #a1e4f2;
+            color: #235a5e;
+            text-shadow: 1px 1px #e0f7fa;
+            cursor: pointer;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            transition: box-shadow 0.2s, transform 0.2s;
+            font-weight: bold;
+        }
 
-    #menu {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-    }
+        .funButton:hover {
+            box-shadow: 8px 8px 0 0 #235a5e;
+            transform: translate(-2px, -2px);
+        }
 
-    /* New Game - match .menuSection style */
-    #playerName {
-        display: block;
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        padding: 12px;
-        width: 260px;
-        border: 4px solid #235a5e;
-        border-radius: 0;
-        background: #a1e4f2;
-        color: #235a5e;
-        outline: none;
-        box-shadow: 6px 6px 0 0 #235a5e;
-        transition: box-shadow 0.2s, transform 0.2s;
-        margin: 0 auto;
-        text-align: center;
-        font-weight: bold;
-    }
+        #menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
 
-    #playerName:focus {
-        box-shadow: 8px 8px 0 0 #235a5e;
-        transform: translate(-2px, -2px);
-    }
+        /* New Game - match .menuSection style */
+        #playerName {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            padding: 12px;
+            width: 260px;
+            border: 4px solid #235a5e;
+            border-radius: 0;
+            background: #a1e4f2;
+            color: #235a5e;
+            outline: none;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            transition: box-shadow 0.2s, transform 0.2s;
+            margin: 0 auto;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    /* Placeholder styled like h2 */
-    #playerName::placeholder {
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        color: #235a5e;
-        text-shadow: 2px 2px #e0f7fa;
-    }
+        #playerName:focus {
+            box-shadow: 8px 8px 0 0 #235a5e;
+            transform: translate(-2px, -2px);
+        }
 
-    /* Game */
-    #game {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        box-sizing: border-box;
-        position: relative;
-    }
+        /* Placeholder styled like h2 */
+        #playerName::placeholder {
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #235a5e;
+            text-shadow: 2px 2px #e0f7fa;
+        }
 
-    .topBar {
-        width: 100%;
-        height: 50px;
-        background: #a1e4f2;
-        border: 4px solid #235a5e;
-        box-shadow: 6px 6px 0 0 #235a5e;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 16px;
-        box-sizing: border-box;
-    }
+        /* Game */
+        #game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
 
-    .gameLogo {
-        height: 20px;
-    }
+        .topBar {
+            width: 100%;
+            height: 50px;
+            background: #a1e4f2;
+            border: 4px solid #235a5e;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
 
-    #gameState {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        color: #235a5e;
-        text-shadow: 1px 1px #e0f7fa;
-        font-weight: bold;
-    }
+        .gameLogo {
+            height: 20px;
+        }
 
-    /* Game Over styling */
-    #gameOver {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        box-sizing: border-box;
-        background: #3fabe4;      /* same as body */
-        min-height: 100vh;
-    }
+        #gameState {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            color: #235a5e;
+            text-shadow: 1px 1px #e0f7fa;
+            font-weight: bold;
+        }
 
-    /* give the header, title and text the same panel look */
-    .gameHeader,
-    #gameOver h1,
-    #gameOver p {
-        background: #a1e4f2;        /* light panel */
-        border: 4px solid #235a5e;  /* dark pixel border */
-        box-shadow: 6px 6px 0 0 #235a5e;
-        width: 90%;
-        max-width: 600px;
-        padding: 20px 16px;
-        text-align: center;
-        font-family: 'Courier New', monospace;
-        color: #235a5e;
-        text-shadow: 1px 1px #e0f7fa;
-        margin-bottom: 16px;
-    }
+        /* Game Over styling */
+        #gameOver {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: #3fabe4;
+            /* same as body */
+            min-height: 100vh;
+        }
 
-    #gameOver h1 {
-        font-size: 24px;
-        margin-bottom: 8px;
-        text-shadow: 2px 2px #e0f7fa;
-    }
+        /* give the header, title and text the same panel look */
+        .gameHeader,
+        #gameOver h1,
+        #gameOver p {
+            background: #a1e4f2;
+            /* light panel */
+            border: 4px solid #235a5e;
+            /* dark pixel border */
+            box-shadow: 6px 6px 0 0 #235a5e;
+            width: 90%;
+            max-width: 600px;
+            padding: 20px 16px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            color: #235a5e;
+            text-shadow: 1px 1px #e0f7fa;
+            margin-bottom: 16px;
+        }
 
-    #gameOver p {
-        font-size: 18px;
-        margin-bottom: 24px;
-    }
+        #gameOver h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px #e0f7fa;
+        }
 
-    /* reuse your .funButton layout */
-    #gameOverButtons {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 20px;
-    }
-    #gameOverButtons .funButton {
-        margin: 0;
-    }
+        #gameOver p {
+            font-size: 18px;
+            margin-bottom: 24px;
+        }
 
-    /* Leaderborad */
-    #leaderboard table {
-        width: 100%;
-        border-collapse: collapse;
-        box-shadow: 6px 6px 0 0 #235a5e;  /* hard pixel shadow */
-    }
-    #leaderboard th,
-    #leaderboard td {
-        padding: 12px;
-        border: 4px solid #235a5e;
-        background: #a1e4f2;
-        color: #235a5e;
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        text-shadow: 1px 1px #e0f7fa;
-        text-align: center;
-    }
-    #leaderboard th {
-        text-shadow: 2px 2px #e0f7fa;
-    }
+        /* reuse your .funButton layout */
+        #gameOverButtons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-    #info {
-        margin-top: 20px;
-        text-align: center;
-        background: #a1e4f2;         /* light tint against #3fabe4 */
-        border: 4px solid #235a5e;  /* dark, pixel‐y border */
-        padding: 20px 16px;
-        width: 90%;
-        max-width: 600px;
-        box-shadow: 6px 6px 0 0 #235a5e;  /* hard shadow, no blur */
-        font-family: 'Courier New', monospace; /* pixel‐style font */
-        font-weight: bold;
-    }
+        #gameOverButtons .funButton {
+            margin: 0;
+        }
 
-    #info table {
-        width: 100%;
-        border-collapse: collapse;
-        box-shadow: 6px 6px 0 0 #235a5e;  /* hard pixel shadow */
-    }
+        /* Leaderborad */
+        #leaderboard table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            /* hard pixel shadow */
+        }
 
-    #info th,
-    #info td {
-        padding: 12px;
-        border: 4px solid #235a5e;
-        background: #a1e4f2;
-        color: #235a5e;
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        text-shadow: 1px 1px #e0f7fa;
-        text-align: center;
-    }
-    #info th {
-        text-shadow: 2px 2px #e0f7fa;
-    }
-    #info td img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px;
-    }
+        #leaderboard th,
+        #leaderboard td {
+            padding: 12px;
+            border: 4px solid #235a5e;
+            background: #a1e4f2;
+            color: #235a5e;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-shadow: 1px 1px #e0f7fa;
+            text-align: center;
+        }
 
-    #wishText {
-        display: block;
-        font-family: 'Courier New', monospace;
-        font-size: 18px;
-        padding: 12px;
-        width: 90%;
-        max-width: 500px;
-        border: 4px solid #235a5e;
-        background: #a1e4f2;
-        color: #235a5e;
-        box-shadow: 6px 6px 0 0 #235a5e;
-        margin: 0 auto;
-        font-weight: bold;
-        outline: none;
-        resize: none;
-    }
+        #leaderboard th {
+            text-shadow: 2px 2px #e0f7fa;
+        }
+
+        #info {
+            margin-top: 20px;
+            text-align: center;
+            background: #a1e4f2;
+            /* light tint against #3fabe4 */
+            border: 4px solid #235a5e;
+            /* dark, pixel‐y border */
+            padding: 20px 16px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            /* hard shadow, no blur */
+            font-family: 'Courier New', monospace;
+            /* pixel‐style font */
+            font-weight: bold;
+        }
+
+        #info table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            /* hard pixel shadow */
+        }
+
+        #info th,
+        #info td {
+            padding: 12px;
+            border: 4px solid #235a5e;
+            background: #a1e4f2;
+            color: #235a5e;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            text-shadow: 1px 1px #e0f7fa;
+            text-align: center;
+        }
+
+        #info th {
+            text-shadow: 2px 2px #e0f7fa;
+        }
+
+        #info td img {
+            width: 80px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        #wishText {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            padding: 12px;
+            width: 90%;
+            max-width: 500px;
+            border: 4px solid #235a5e;
+            background: #a1e4f2;
+            color: #235a5e;
+            box-shadow: 6px 6px 0 0 #235a5e;
+            margin: 0 auto;
+            font-weight: bold;
+            outline: none;
+            resize: none;
+        }
 
         .wishRow {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Center items horizontally */
+            align-items: center;
+            /* Center items horizontally */
             padding: 12px;
             margin-bottom: 16px;
             width: 100%;
@@ -320,8 +341,10 @@
             text-shadow: 1px 1px #e0f7fa;
             font-weight: bold;
             margin-bottom: 8px;
-            text-align: center; /* Center text */
-            width: 100%; /* Ensure it takes full width for centering */
+            text-align: center;
+            /* Center text */
+            width: 100%;
+            /* Ensure it takes full width for centering */
         }
 
         .wishContent {
@@ -329,294 +352,306 @@
             color: #235a5e;
             text-shadow: 1px 1px #e0f7fa;
             font-style: italic;
-            text-align: center; /* Center text */
-            width: 100%; /* Ensure it takes full width for centering */
+            text-align: center;
+            /* Center text */
+            width: 100%;
+            /* Ensure it takes full width for centering */
         }
-
     </style>
-  <script type="module">
-    import Game from "./src/game.js";
+    <script type="module">
+        import Game from "./src/game.js";
 
-    let game = null;
-    let playerName = null;
+        let game = null;
+        let playerName = null;
 
-    function onGameOver(finalScore) {
-        // console.log("Game Over! Final Score: " + finalScore);
-        addScore(playerName, finalScore);
-        setTimeout(function() {
-            displayGameOver(finalScore)
-        }, 1000);
-    }
-
-    function onScoreUpdate(score) {
-        document.getElementById("gameScore").innerText = "Słoiki: " + score;
-    }
-
-    function startNewGame() {
-        const canvas = document.getElementById("gameCanvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = Math.min(window.innerWidth, 800);
-        canvas.height = Math.min(window.innerHeight, 600);
-        game = new Game(ctx, canvas.height, canvas.width, onGameOver, onScoreUpdate);
-        game.start();
-    }
-
-    // Onload 
-    document.addEventListener("DOMContentLoaded", function() {
-        loadScores();
-
-        // startNewGame();
-        // playerName = "ASd";
-        // displayGameOver(19);
-    });
-
-    document.getElementById('startButton').addEventListener('click', function() {
-        const playerNameInput = document.getElementById('playerName');
-        if (!playerNameInput.value.trim()) {
-            playerNameInput.focus();
-            return;
-        } else {
-            playerName = playerNameInput.value.trim();
+        function onGameOver(finalScore) {
+            // console.log("Game Over! Final Score: " + finalScore);
+            addScore(playerName, finalScore);
+            setTimeout(function () {
+                displayGameOver(finalScore)
+            }, 1000);
         }
-        displayGame();
-    });
 
-    document.getElementById('sendWish').addEventListener('click', function() {
-        const wishText = document.getElementById('wishText').value.trim();
-        if (wishText) {
-            addWishes(playerName, wishText);
+        function onScoreUpdate(score) {
+            document.getElementById("gameScore").innerText = "Słoiki: " + score;
         }
-        displayGame();
-    });
 
-    document.getElementById('restartButton').addEventListener('click', function() {
-        displayGame();
-    });
-    document.getElementById('toMenuButton').addEventListener('click', function() {
-        displayMenu();
-    });
-    
-    document.getElementById('playerName').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            document.getElementById('startButton').click();
+        function startNewGame() {
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = Math.min(window.innerWidth, 800);
+            canvas.height = Math.min(window.innerHeight, 600);
+            game = new Game(ctx, canvas.height, canvas.width, onGameOver, onScoreUpdate);
+            game.start();
         }
-    });
 
-    function displayGame() {
-        // Prevent scrolling
-        document.body.style.overflow = 'hidden';
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('game').style.display = 'block';
-        document.getElementById('gameOver').style.display = 'none';
-        startNewGame();
-    }
+        // Onload 
+        document.addEventListener("DOMContentLoaded", function () {
+            loadScores();
 
-    function displayMenu() {
-        document.body.style.overflow = 'auto';
-        document.getElementById('menu').style.display = 'block';
-        document.getElementById('game').style.display = 'none';
-        document.getElementById('gameOver').style.display = 'none';
-        loadScores();
-    }
-
-    function displayGameOver(score) {
-        document.body.style.overflow = 'auto';
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('game').style.display = 'none';
-        document.getElementById('gameOver').style.display = 'block';
-        document.getElementById('finalScore').innerText = score;
-        document.querySelector('#gameOver h1').innerText = 'Game Over ' + playerName + "!";
-    }
-
-    // Resize canvas on window resize
-    // window.addEventListener('resize', function() {
-    //     canvas.width = Math.min(window.innerWidth, 800);
-    //     canvas.height = Math.min(window.innerHeight, 600);
-    //     game.resize(canvas.height, canvas.width);
-    // });
-
-    function binId() {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const mode = urlParams.get('mode');
-        if (mode === 'dev') {
-            return "68036e0f8561e97a5002f2c0";
-        } else {
-            return "68036ada8561e97a5002f168";
-        }
-    }
-
-    async function addScore(player, score) {
-        const BIN_ID = binId();
-
-        // Fetch existing scores
-        let response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
-        let data = await response.json();
-        let gameData = data.record;
-
-        // Add new score
-        gameData.results.push({ player: player, score: score, time: new Date().toISOString() });
-        
-        // console.log(gameData);
-        // Send updated gameData to JSONBin.io
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(gameData)
+            // startNewGame();
+            // playerName = "ASd";
+            // displayGameOver(19);
         });
 
-        // console.log("Score added successfully!");
-    }
-
-    async function addWishes(player, wish) {
-        const BIN_ID = binId();
-
-        // Fetch existing scores
-        let response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
-        let data = await response.json();
-        let gameData = data.record;
-
-        // Add new score
-        gameData.wishes.push({ player: player, wish: wish, time: new Date().toISOString() });
-        // console.log(gameData);
-        // Send updated gameData to JSONBin.io
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(gameData)
-        });
-        // console.log("Wish added successfully!");
-    }
-
-    async function loadScores() {
-        const BIN_ID = binId();
-        let response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
-        let data = await response.json();
-        let scores = data.record.results;
-        
-        scores = scores.filter(result => new Date(result.time) > new Date('2025-03-19T18:00:00Z'));
-        // console.log(scores);
-
-        let top5 = scores.sort((a, b) => b.score - a.score).slice(0, 5);
-        let table = document.querySelector('#leaderboard table');
-        
-        // Clear existing rows but keep the header
-        table.querySelectorAll('tr:not(:first-child)').forEach(row => row.remove());
-
-        top5.forEach((result, index) => {
-            let row = document.createElement('tr');
-            let nameCell = document.createElement('td');
-            nameCell.innerText = result.player;
-            let scoreCell = document.createElement('td');
-            scoreCell.innerText = result.score;
-            row.appendChild(nameCell);
-            row.appendChild(scoreCell);
-            table.appendChild(row);
+        document.getElementById('startButton').addEventListener('click', function () {
+            const playerNameInput = document.getElementById('playerName');
+            if (!playerNameInput.value.trim()) {
+                playerNameInput.focus();
+                return;
+            } else {
+                playerName = playerNameInput.value.trim();
+            }
+            displayGame();
         });
 
-        let wishes = data.record.wishes;
-        // After retrieving `wishes = data.record.wishes;`
-        const wishesArr = Array.isArray(wishes) ? wishes : [];
-        // Clear existing wish entries
-        const wishesContainer = document.getElementById('wishes');
-        wishesContainer.querySelectorAll('.wishRow').forEach(el => el.remove());
-        wishesArr
-            .reverse()         // newest at top
-            .forEach(w => {
-                const row = document.createElement('div');
-                row.className = 'wishRow';
+        document.getElementById('sendWish').addEventListener('click', function () {
+            const wishText = document.getElementById('wishText').value.trim();
+            if (wishText) {
+                addWishes(playerName, wishText);
+            }
+            displayGame();
+        });
 
-                const author = document.createElement('div');
-                author.className = 'wishAuthor';
-                author.innerText = w.player;
+        document.getElementById('restartButton').addEventListener('click', function () {
+            displayGame();
+        });
+        document.getElementById('toMenuButton').addEventListener('click', function () {
+            displayMenu();
+        });
 
-                const text = document.createElement('div');
-                text.className = 'wishText';
-                text.innerText = w.wish;
+        document.getElementById('playerName').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                document.getElementById('startButton').click();
+            }
+        });
 
-                row.appendChild(author);
-                row.appendChild(text);
-                wishesContainer.appendChild(row);
+        function displayGame() {
+            // Prevent scrolling
+            document.body.style.overflow = 'hidden';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            document.getElementById('gameOver').style.display = 'none';
+            startNewGame();
+        }
+
+        function displayMenu() {
+            document.body.style.overflow = 'auto';
+            document.getElementById('menu').style.display = 'block';
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'none';
+            loadScores();
+        }
+
+        function displayGameOver(score) {
+            document.body.style.overflow = 'auto';
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('gameOver').style.display = 'block';
+            document.getElementById('finalScore').innerText = score;
+            document.querySelector('#gameOver h1').innerText = 'Game Over ' + playerName + "!";
+        }
+
+        // Resize canvas on window resize
+        // window.addEventListener('resize', function() {
+        //     canvas.width = Math.min(window.innerWidth, 800);
+        //     canvas.height = Math.min(window.innerHeight, 600);
+        //     game.resize(canvas.height, canvas.width);
+        // });
+
+        function binId() {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const mode = urlParams.get('mode');
+            if (mode === 'dev') {
+                return "68036e0f8561e97a5002f2c0";
+            } else {
+                return "68036ada8561e97a5002f168";
+            }
+        }
+
+        async function addScore(player, score) {
+            const BIN_ID = binId();
+
+            // Fetch existing scores
+            let response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
+            let data = await response.json();
+            let gameData = data.record;
+
+            // Add new score
+            gameData.results.push({ player: player, score: score, time: new Date().toISOString() });
+
+            // console.log(gameData);
+            // Send updated gameData to JSONBin.io
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(gameData)
             });
-    }
+
+            // console.log("Score added successfully!");
+        }
+
+        async function addWishes(player, wish) {
+            const BIN_ID = binId();
+
+            // Fetch existing scores
+            let response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
+            let data = await response.json();
+            let gameData = data.record;
+
+            // Add new score
+            gameData.wishes.push({ player: player, wish: wish, time: new Date().toISOString() });
+            // console.log(gameData);
+            // Send updated gameData to JSONBin.io
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(gameData)
+            });
+            // console.log("Wish added successfully!");
+        }
+
+        async function loadScores() {
+            const BIN_ID = binId();
+            let response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
+            let data = await response.json();
+            let scores = data.record.results;
+
+            scores = scores.filter(result => new Date(result.time) > new Date('2025-03-19T18:00:00Z'));
+            // console.log(scores);
+
+            let top5 = scores.sort((a, b) => b.score - a.score).slice(0, 5);
+            let table = document.querySelector('#leaderboard table');
+
+            // Clear existing rows but keep the header
+            table.querySelectorAll('tr:not(:first-child)').forEach(row => row.remove());
+
+            top5.forEach((result, index) => {
+                let row = document.createElement('tr');
+                let nameCell = document.createElement('td');
+                nameCell.innerText = result.player;
+                let scoreCell = document.createElement('td');
+                scoreCell.innerText = result.score;
+                row.appendChild(nameCell);
+                row.appendChild(scoreCell);
+                table.appendChild(row);
+            });
+
+            let wishes = data.record.wishes;
+            // After retrieving `wishes = data.record.wishes;`
+            const wishesArr = Array.isArray(wishes) ? wishes : [];
+            // Clear existing wish entries
+            const wishesContainer = document.getElementById('wishes');
+            wishesContainer.querySelectorAll('.wishRow').forEach(el => el.remove());
+            wishesArr
+                .reverse()         // newest at top
+                .forEach(w => {
+                    const row = document.createElement('div');
+                    row.className = 'wishRow';
+
+                    const author = document.createElement('div');
+                    author.className = 'wishAuthor';
+                    author.innerText = w.player;
+
+                    const text = document.createElement('div');
+                    text.className = 'wishText';
+                    text.innerText = w.wish;
+
+                    row.appendChild(author);
+                    row.appendChild(text);
+                    wishesContainer.appendChild(row);
+                });
+        }
 
 
 
     </script>
 </head>
+
 <body>
-  <div id="menu">
-    <div class="menuSection logoImage">
-        <img src="./images/logo_large2.png" alt="Logo"/>
-    </div>
-    <!-- <div class="menuSection">
+    <div id="menu">
+        <div class="menuSection logoImage">
+            <img src="./images/logo_large2.png" alt="Logo" />
+        </div>
+        <!-- <div class="menuSection">
       <h2>Pomóż Ali zebrać jak najwięcej słoików.</h2>
     </div> -->
-    <div class="menuSection">
-        <input type="text" id="playerName" placeholder="Podaj swoje imię" />
-        <button id="startButton" class="funButton">START</button>
-    </div>
+        <div class="menuSection">
+            <input type="text" id="playerName" placeholder="Podaj swoje imię" />
+            <button id="startButton" class="funButton">START</button>
+        </div>
 
-    <div id="leaderboard" class="menuSection">
-        <h2>Najlepsi słoikozbieracze!</h2>
-        <table>
-            <tr>
-                <th>Imię</th>
-                <th>Słoiki</th>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-            <tr>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-        </table>
-    </div>
+        <div id="leaderboard" class="menuSection">
+            <h2>Najlepsi słoikozbieracze!</h2>
+            <table>
+                <tr>
+                    <th>Imię</th>
+                    <th>Słoiki</th>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>.</td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>.</td>
+                </tr>
+            </table>
+        </div>
 
-    <div id="info" class="menuSection">
-        <h2>Postacie</h2>
-        <table>
-            <tr>
-                <td><image width="80px" src="./images/favicon2.png"></image></td>
-                <td><b>Ala</b><br>Pomóż Ali zebrać jak najwięcej słoików.</td>
-            </tr>
-            <tr>
-                <td><image width="80px" src="./images/powerup_magnet.png"></image></td>
-                <td><b>Maminka</b><br>Pomaga zbierać słoiki przez 10 sekund.</td>
-            </tr>
-            <tr>
-                <td><image width="80px" src="./images/powerup_shield.png"></image></td>
-                <td><b>Kubik</b><br>To twoja życiowa tarcza, ale tylko przez 5 sekund.</td>
-            </tr>
-            <tr>
-                <td><image width="80px" src="./images/powerup_speed.png"></image></td>
-                <td><b>Ewik</b><br>Jazda, jazda, jazda!!!</td>
-            </tr>
-            <tr>
-                <td><image width="80px" src="./images/powerup_slow.png"></image></td>
-                <td><b>Olik</b><br>Zwolnij trochę, ciesz się życiem :)</td>
-            </tr>
-        </table>
-    </div>
+        <div id="info" class="menuSection">
+            <h2>Postacie</h2>
+            <table>
+                <tr>
+                    <td>
+                        <image width="80px" src="./images/favicon2.png"></image>
+                    </td>
+                    <td><b>Ala</b><br>Pomóż Ali zebrać jak najwięcej słoików.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <image width="80px" src="./images/powerup_magnet.png"></image>
+                    </td>
+                    <td><b>Maminka</b><br>Pomaga zbierać słoiki przez 10 sekund.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <image width="80px" src="./images/powerup_shield.png"></image>
+                    </td>
+                    <td><b>Kubik</b><br>To twoja życiowa tarcza, ale tylko przez 5 sekund.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <image width="80px" src="./images/powerup_speed.png"></image>
+                    </td>
+                    <td><b>Ewik</b><br>Jazda, jazda, jazda!!!</td>
+                </tr>
+                <tr>
+                    <td>
+                        <image width="80px" src="./images/powerup_slow.png"></image>
+                    </td>
+                    <td><b>Olik</b><br>Zwolnij trochę, ciesz się życiem :)</td>
+                </tr>
+            </table>
+        </div>
 
         <div id="wishes" class="menuSection">
             <h2>Życzenia dla Ali</h2>
@@ -631,7 +666,7 @@
     </div>
     <div id="game" style="display: none;">
         <div class="topBar">
-            <img src="./images/logo_small.png" alt="Alalata" class="gameLogo"/>
+            <img src="./images/logo_small.png" alt="Alalata" class="gameLogo" />
             <div id="gameState">
                 <span id="gameScore">Słoiki: 0</span>
             </div>
@@ -642,7 +677,7 @@
         <div class="gameHeader">
             <image width="500" src="./images/logo_small.png" alt="Alalata" />
         </div>
-        
+
         <h1>Game Over!</h1>
         <h1>Wynik: <span id="finalScore">0</span></h1>
         <div id="gameOverButtons">
@@ -654,9 +689,7 @@
             <textarea id="wishText" placeholder="Życzenia..." rows="4"></textarea>
             <button id="sendWish" class="funButton">Wyślij i graj jeszcze raz!</button>
         </div>
-        <div id="footer" style="margin-top: 20px; text-align: center;">
-            <p>Dla Alika od Olika i Maćka with ❤️</p>
-        </div>
     </div>
 </body>
+
 </html>

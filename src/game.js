@@ -38,9 +38,17 @@ class Game {
         const currentTime = Date.now();
         const deltaTime = currentTime - this.lastTime;
         this.lastTime = currentTime;
+        console.log(deltaTime);
 
+        const beforeUpdate = Date.now();
         this.update(deltaTime);
+        const afterUpdate = Date.now();
         this.draw();
+        const afterDraw = Date.now();
+
+        console.log("Update time: " + (afterUpdate - beforeUpdate) + "ms");
+        console.log("Draw time: " + (afterDraw - afterUpdate) + "ms");
+        console.log("Total time: " + (afterDraw - beforeUpdate) + "ms");
 
         if (!this.powerups.shield.isActive()) {
             if (this.obstacles.checkCollision(this.player)) {

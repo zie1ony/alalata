@@ -57,11 +57,7 @@ class Coins {
             // Collect coin if player touches it or magnet is active
             else if (this.isColliding(player, this.coins[i])) {
                 // Collect coin on direct collision
-                if (speedUpActive) {
-                    this.incScore(2);
-                } else {
-                    this.incScore(1);
-                }
+                this.incScore(1);
                 this.coins.splice(i, 1);
             } else if (this.coins[i].gravitating || (magnetActive && this.distance(player, this.coins[i]) < 150)) {
                 // Set coin to gravitate mode if magnet active, or continue gravitating
@@ -83,11 +79,7 @@ class Coins {
                 
                 // Check if coin has reached player after moving
                 if (this.isColliding(player, this.coins[i])) {
-                    if (speedUpActive) {
-                        this.incScore(2);
-                    } else {
-                        this.incScore(1);
-                    }
+                    this.incScore(2);
                     this.coins.splice(i, 1);
                 }
             }
