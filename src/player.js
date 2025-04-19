@@ -3,7 +3,11 @@ import GameSpeed from "./gameSpeed.js";
 class Player {
     constructor(canvasHeight) {
         this.img = new Image();
-        this.img.src = "./images/ala_mala.png";
+        this.img.src = "./images/ala2_mala.png";
+
+        this.shieldImg = new Image();
+        this.shieldImg.src = "./images/shield.png";
+
         this.canvasHeight = canvasHeight;
         this.width = 50;
         this.height = 100;
@@ -11,16 +15,20 @@ class Player {
         this.x = 50;
         this.y = canvasHeight / 2 - this.height;
 
-        this.fps = 8;
+        this.fps = 4;
         this.frames = 3;
         this.currentFrame = 0;
         this.frameCounter = 0;
         this.frameWidth = 150;
-        this.frameHeight = 260;
+        this.frameHeight = 300;
+
         
-        this.loaded = false;
+        this.loaded = 0;
         this.img.onload = () => {
-            this.loaded = true;
+            this.loaded += 1;
+        };
+        this.shieldImg.onload = () => {
+            this.loaded += 1;
         };
 
         this.hasShield = false;
@@ -38,7 +46,7 @@ class Player {
     }
 
     isLoaded() {
-        return this.loaded;
+        return this.loaded === 2;
     }
 
     update(deltaTime, hasShield) {
@@ -64,11 +72,21 @@ class Player {
     }
 
     draw(ctx) {
+        // Draw a rectangle around the player for debugging
+        if (this.hasShield) {
+            ctx.drawImage(
+                this.shieldImg,
+                this.x - 30,
+                this.y - 30,
+                this.width + 60,
+                this.height + 60
+            );
+        }
         // Draw the current frame
         ctx.drawImage(
             this.img,
             this.currentFrame * this.frameWidth,
-            20, // Frame position on sprite sheet
+            0, // Frame position on sprite sheet
             this.frameWidth,
             this.frameHeight,
             this.x,
@@ -77,12 +95,7 @@ class Player {
             this.height
         );
 
-        // Draw a rectangle around the player for debugging
-        if (this.hasShield) {
-            ctx.strokeStyle = "blue";
-            ctx.lineWidth = 5;
-            ctx.strokeRect(this.x, this.y, this.width, this.height);
-        }
+
     }
 
     setGameSpeed(speed) {

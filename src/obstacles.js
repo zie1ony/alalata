@@ -5,7 +5,7 @@ class Obstacles {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.obstacles = [];
-        this.obstacleFrequency = 1800; // Interval in ms between obstacle creation
+        this.obstacleFrequency = 2000; // Interval in ms between obstacle creation
         this.lastObstacleTime = Date.now();
         this.pxPerSecond = 300; // Pixels per second
         this.rockPeriod = 1000;
@@ -91,13 +91,13 @@ class Obstacles {
         // 30% chance for flying rock, 20% for moving pipes, 50% for regular pipes
         const random = Math.random();
         if (random < 0.3) {
-            console.log("Creating flying rock");
+            // console.log("Creating flying rock");
             this.createFlyingRock();
         } else if (random < 0.5) {
-            console.log("Creating moving pipe obstacle");
+            // console.log("Creating moving pipe obstacle");
             this.createMovingPipeObstacle();
         } else {
-            console.log("Creating pipe obstacle");
+            // console.log("Creating pipe obstacle");
             this.createPipeObstacle();
         }
     }
@@ -106,7 +106,7 @@ class Obstacles {
         const minGapY = 40;
         const maxGapY = this.canvasHeight - gapHeight - 40;
         const gapPosition = Math.random() * (maxGapY - minGapY) + minGapY;
-        const obstacleWidth = 70;
+        const obstacleWidth = 120;
         const pairId = Date.now(); // Unique ID to match pipe pairs
         
         // Top pipe

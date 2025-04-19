@@ -6,13 +6,14 @@ import Powerups from "./powerups.js";
 import GameSpeed from "./gameSpeed.js";
 
 class Game {
-    constructor(ctx, canvasHeight, canvasWidth) {
+    constructor(ctx, canvasHeight, canvasWidth, gameOverCallback, scoreUpdateCallback) {
         this.ctx = ctx;
         this.background = new BackgroundAnimation("background_light.png", ctx, canvasHeight, canvasWidth);
         this.player = new Player(canvasHeight);
         this.obstacles = new Obstacles(canvasWidth, canvasHeight);
-        this.coins = new Coins(canvasWidth, canvasHeight);
+        this.coins = new Coins(canvasWidth, canvasHeight, scoreUpdateCallback);
         this.powerups = new Powerups(canvasWidth, canvasHeight);
+        this.gameOverCallback = gameOverCallback;
     }
 
     isLoaded() {
@@ -43,7 +44,7 @@ class Game {
 
         if (!this.powerups.shield.isActive()) {
             if (this.obstacles.checkCollision(this.player)) {
-                console.log("Collision detected!");
+                this.gameOverCallback(this.coins.getScore());
                 return;
             }
         }
@@ -64,7 +65,7 @@ class Game {
         this.background.update(deltaTime);
         this.player.update(deltaTime, this.powerups.shield.isActive());
         this.obstacles.update(deltaTime, );
-        this.coins.update(deltaTime, this.player, this.obstacles, this.powerups.magnet.isActive());
+        this.coins.update(deltaTime, this.player, this.obstacles, this.powerups.magnet.isActive(), this.powerups.speedUp.isActive());
         this.powerups.update(deltaTime, this.player, this.obstacles);
     }
 

@@ -1,7 +1,7 @@
 import GameSpeed from "./gameSpeed.js";
 
 class Coins {
-    constructor(canvasWidth, canvasHeight) {
+    constructor(canvasWidth, canvasHeight, scoreUpdateCallback) {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.coins = [];
@@ -15,13 +15,24 @@ class Coins {
         this.loaded = false;
         this.jarImgWidth = 200;
         this.jarImgHeight = 262;
+        this.scoreUpdateCallback = scoreUpdateCallback;
+        this.scoreUpdateCallback(this.score);
     }
 
     isLoaded() {
         return this.loaded;
     }
 
-    update(deltaTime, player, obstacles, magnetActive) {
+    getScore() {
+        return this.score;
+    }
+
+    incScore(num) {
+        this.score += num;
+        this.scoreUpdateCallback(this.score);
+    }
+
+    update(deltaTime, player, obstacles, magnetActive, speedUpActive) {
         const now = Date.now();
         const speedFactor = (this.pxPerSecond * deltaTime) / 1000;
         
@@ -46,7 +57,11 @@ class Coins {
             // Collect coin if player touches it or magnet is active
             else if (this.isColliding(player, this.coins[i])) {
                 // Collect coin on direct collision
-                this.score += 1;
+                if (speedUpActive) {
+                    this.incScore(2);
+                } else {
+                    this.incScore(1);
+                }
                 this.coins.splice(i, 1);
             } else if (this.coins[i].gravitating || (magnetActive && this.distance(player, this.coins[i]) < 150)) {
                 // Set coin to gravitate mode if magnet active, or continue gravitating
@@ -68,7 +83,11 @@ class Coins {
                 
                 // Check if coin has reached player after moving
                 if (this.isColliding(player, this.coins[i])) {
-                    this.score += 1;
+                    if (speedUpActive) {
+                        this.incScore(2);
+                    } else {
+                        this.incScore(1);
+                    }
                     this.coins.splice(i, 1);
                 }
             }

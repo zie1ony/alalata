@@ -28,16 +28,46 @@ class Powerups {
         this.canvasWidth = canvasWidth;
         this.canvasHeight = canvasHeight;
         this.powerups = [];
-        this.powerupFrequency = 5000; // Interval in ms between powerup creation
+        this.powerupFrequency = 2000; // Interval in ms between powerup creation
         this.lastPowerupTime = Date.now();
         this.pxPerSecond = 300; // Pixels per second
         
         // Active powerup effects
         this.speedUp = new PowerUp(0, 5000); // Speed up for 5 seconds
         this.slowDown = new PowerUp(0, 5000); // Slow down for 5 seconds
-        this.magnet = new PowerUp(0, 5000); // Magnet for 5 seconds
+        this.magnet = new PowerUp(0, 10000); // Magnet for 5 seconds
         this.shield = new PowerUp(0, 5000); // Shield for 5 seconds
+
+        this.loaded = 0;
+        this.magnetImg = new Image();
+        this.magnetImg.src = "images/powerup_magnet.png";
+        this.magnetImg.onload = () => {
+            this.loaded += 1;
+        };
+
+        this.shieldImg = new Image();
+        this.shieldImg.src = "images/powerup_shield.png";
+        this.shieldImg.onload = () => {
+            this.loaded += 1;
+        };
+
+        this.speedUpImg = new Image();
+        this.speedUpImg.src = "images/powerup_speed.png";
+        this.speedUpImg.onload = () => {
+            this.loaded += 1;
+        };
+
+        this.slowDownImg = new Image();
+        this.slowDownImg.src = "images/powerup_slow.png";
+        this.slowDownImg.onload = () => {
+            this.loaded += 1;
+        };
     }
+
+    isLoaded() {
+        return this.loaded === 4;
+    }
+
 
     update(deltaTime, player, obstacles) {
         const now = Date.now();
@@ -143,56 +173,61 @@ class Powerups {
     draw(ctx) {
         // Draw all powerups
         this.powerups.forEach(pw => {
-            // Draw circular powerup background
-            ctx.fillStyle = pw.color;
-            ctx.beginPath();
-            ctx.arc(
-                pw.x + pw.width / 2, 
-                pw.y + pw.height / 2, 
-                pw.width / 2, 
-                0, 
-                Math.PI * 2
-            );
-            ctx.fill();
-            
-            // Add text label to identify the powerup
-            ctx.fillStyle = "#000";
-            ctx.font = "12px Arial";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(
-                pw.type.split("_")[0], 
-                pw.x + pw.width / 2, 
-                pw.y + pw.height / 2
-            );
+            let img = null;
+            if (pw.type === "magnet") {
+                img = this.magnetImg;
+            }
+
+            if (pw.type === "shield") {
+                img = this.shieldImg;
+            }
+
+            if (pw.type === "speed_up") {
+                img = this.speedUpImg;
+            }
+
+            if (pw.type === "slow_down") {
+                img = this.slowDownImg;
+            }
+
+            // Draw powerup image
+            if (img) {
+                ctx.drawImage(
+                    img,
+                    pw.x,
+                    pw.y,
+                    pw.width,
+                    pw.height
+                );
+            }
         });
 
         // Draw active powerup effects
-        if (this.speedUp.isActive()) {
-            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-            // Write "Speed Up" text
-            let text = "SpeedUp for " + this.speedUp.remainingTimeInSeconds() + "s";
-            ctx.fillText(text, 50, 50);
-        }
+        // if (this.speedUp.isActive()) {
+        //     ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        //     // Write "Speed Up" text
+        //     let text = "SpeedUp for " + this.speedUp.remainingTimeInSeconds() + "s";
+        //     ctx.fillText(text, 50, 50);
+        // }
 
-        if (this.slowDown.isActive()) {
-            ctx.fillStyle = "rgba(0, 255, 255, 0.5)";
-            // Write "Slow Down" text
-            let text = "SlowDown for " + this.slowDown.remainingTimeInSeconds() + "s";
-            ctx.fillText(text, 50, 70);
-        }
-        if (this.magnet.isActive()) {
-            ctx.fillStyle = "rgba(128, 0, 128, 0.5)";
-            // Write "Magnet" text
-            let text = "Magnet for " + this.magnet.remainingTimeInSeconds() + "s";
-            ctx.fillText(text, 50, 90);
-        }
-        if (this.shield.isActive()) {
-            ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
-            // Write "Shield" text
-            let text = "Shield for " + this.shield.remainingTimeInSeconds() + "s";
-            ctx.fillText(text, 50, 110);
-        }
+        // if (this.slowDown.isActive()) {
+        //     ctx.fillStyle = "rgba(0, 255, 255, 0.5)";
+        //     // Write "Slow Down" text
+        //     let text = "SlowDown for " + this.slowDown.remainingTimeInSeconds() + "s";
+        //     ctx.fillText(text, 50, 70);
+        // }
+        // if (this.magnet.isActive()) {
+        //     ctx.fillStyle = "rgba(128, 0, 128, 0.5)";
+        //     // Write "Magnet" text
+        //     let text = "Magnet for " + this.magnet.remainingTimeInSeconds() + "s";
+        //     ctx.fillText(text, 50, 90);
+        // }
+        // if (this.shield.isActive()) {
+        //     ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+        //     // Write "Shield" text
+        //     let text = "Shield for " + this.shield.remainingTimeInSeconds() + "s";
+        //     ctx.fillText(text, 50, 110);
+        // }
     }
 
     isColliding(a, b) {

@@ -21,9 +21,9 @@ class GameSpeed {
             case GameSpeed.SLOW:
                 return 50;
             case GameSpeed.NORMAL:
-                return 150;
+                return 100;
             case GameSpeed.FAST:
-                return 250;
+                return 200;
             default:
                 return 100;
         }

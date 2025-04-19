@@ -12,9 +12,11 @@ There are also powerups:
 - slow_down - speed of the game is decreased for a short time
 
 # TODO:
-Migająca tarcza
-Zamienić na głowy
-- Ewa szybciej
-- Ola wolniej 
-- Kuba tarcza
-- magnez
+-[x] Usunąć debug.
+-[x] Jak jest speed to punkty razy dwa
+-[x] Zmienic włosy ali na czarne
+-[x] Tarcza która miga
+-[x] Ustawić poprawne szerokości rur
+-[x] Dodać opisy do powerupów
+-[x] Dodać zyczenia po game over
+- Dodać zyczenia z pagingiem
