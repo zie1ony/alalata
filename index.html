@@ -380,7 +380,7 @@
             const canvas = document.getElementById("gameCanvas");
             const ctx = canvas.getContext("2d");
             canvas.width = Math.min(window.innerWidth, 800);
-            canvas.height = Math.min(window.innerHeight, 600);
+            canvas.height = Math.min(window.innerHeight, 550);
             game = new Game(ctx, canvas.height, canvas.width, onGameOver, onScoreUpdate);
             game.start();
         }
