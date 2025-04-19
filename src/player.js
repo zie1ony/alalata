@@ -5,6 +5,9 @@ class Player {
         this.img = new Image();
         this.img.src = "./images/ala2_mala.png";
 
+        this.redAla = new Image();
+        this.redAla.src = "./images/ala2_red_mala.png";
+
         this.shieldImg = new Image();
         this.shieldImg.src = "./images/shield.png";
 
@@ -30,8 +33,12 @@ class Player {
         this.shieldImg.onload = () => {
             this.loaded += 1;
         };
+        this.redAla.onload = () => {
+            this.loaded += 1;
+        };
 
         this.hasShield = false;
+        this.isSlowed = false;
     }
 
     setupKeyListeners() {
@@ -46,13 +53,15 @@ class Player {
     }
 
     isLoaded() {
-        return this.loaded === 2;
+        return this.loaded === 3;
     }
 
-    update(deltaTime, hasShield) {
+    update(deltaTime, hasShield, isSlowed) {
         // Animation logic based on deltaTime and fps
         this.frameCounter += deltaTime;
         this.hasShield = hasShield;
+        this.isSlowed = isSlowed;
+
         // Calculate time per frame based on fps
         const frameTime = 1000 / this.fps;
         
@@ -92,9 +101,17 @@ class Player {
                 this.height + 60
             );
         }
+
+        let img;
+
+        if (this.isSlowed) {
+            img = this.redAla;
+        } else {
+            img = this.img;
+        }
         // Draw the current frame
         ctx.drawImage(
-            this.img,
+            img,
             this.currentFrame * this.frameWidth,
             0, // Frame position on sprite sheet
             this.frameWidth,

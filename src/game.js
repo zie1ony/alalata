@@ -71,7 +71,7 @@ class Game {
         this.powerups.setGameSpeed(speed);
 
         this.background.update(deltaTime);
-        this.player.update(deltaTime, this.powerups.shield.isActive());
+        this.player.update(deltaTime, this.powerups.shield.isActive(), this.powerups.slowDown.isActive());
         this.obstacles.update(deltaTime, );
         this.coins.update(deltaTime, this.player, this.obstacles, this.powerups.magnet.isActive(), this.powerups.speedUp.isActive());
         this.powerups.update(deltaTime, this.player, this.obstacles);
